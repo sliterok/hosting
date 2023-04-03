@@ -1,0 +1,10 @@
+port: 8080
+myId: 530586956
+chatId: 4539685676
+apiId: 6345634
+apiHash: dfghjklkj3456hoi3hggy3uf45wfe2
+startId: 1
+secretEncrypt: random-url-encryption-string-32b
+secretTweak: random-init-vector-value
+modulus: 10000001
+domain: https://url:port/
