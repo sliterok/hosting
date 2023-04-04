@@ -1,10 +1,12 @@
 # Telegram video hosting
 
-Have you ever wondered if you can create a free* video hosting? Like basically unlimited and pretty good...  
-If so, you've come to the right place. This is a telegram "bot" that also listens to the http requests.  
-When you send a video to the chat you designated as a hosting chat this "bot" will reply you with a link to this video.  
+Have you ever wondered if you can create a free video hosting? Like basically unlimited* and pretty good...  
+If so, you've come to the right place. This is a telegram userbot that also listens to the http requests.  
+When you send a video to the chat you designated as a hosting chat this userbot will reply you with a link to this video.  
 This link can be embedded into discord or other messengers.
-Tricky part is that the bots are limited to files of [20 MB](https://core.telegram.org/bots/api#sending-files) so you'd need to create your own "client" and authenticate under your profile.
+Tricky part is that the bots are limited to files of [20 MB](https://core.telegram.org/bots/api#sending-files) so you'd need to create your own "client" and authenticate under your profile.  
+
+\* Unlimited assuming you have second-level domain to use cloudflare caching since telegram download speed is fairly limited. File size limitation info [here](https://telegram.org/blog/700-million-and-premium#4-gb-uploads).
 
 ## Get creds
 - Get apiId and apiHash by following [this steps](https://core.telegram.org/api/obtaining_api_id#obtaining-api-id)
@@ -51,8 +53,14 @@ pnpm
 pnpm run start
 ```
 
-When running first time you'll be prompted all your telegram creds, which are stored plain-text locally afterwards.
+When running first time you'll be prompted all your telegram creds (phone, code, password). Generated telegram session is stored plain-text locally afterwards.
 
-## Tips
-- use cloudflare for https and caching since telegram download is pretty slow
-- \* assuming you have second-level domain to tie to cloudflare to add first-class CDN to your videos
+## FAQ
+### What's reasonable value for the `modulus`?
+Sequential id of the message is encoded as 24bit integer. This naturally limits modulus to the value of 16,777,215. Also package for the FPE ecnryption is designed to be used with modulus value up to [10,000,000](https://github.com/eCollect/node-fe1-fpe#considerations).
+
+### What If I have more than 5,000,000 messages?
+Straightforward way is to set startId to a value of 5,000,000. In case you have even more messages please consider rewriting `index.js` to user 32bit int instead of 24bit.
+
+## TODO
+- Implement [Range requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests) (now scrubbing works only in discord embedding since it's preloading the video)
